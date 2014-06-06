@@ -1,0 +1,4 @@
+#tweets
+  - @tweets.each do |t|
+    = div_for t do
+      %p=t.text.html_safe
