@@ -1,0 +1,10 @@
+%p= @tweet.text.html_safe
+%p
+  Tweet id #{@tweet.id_number}
+  posted at #{@tweet.created_at}
+%table
+  %tbody
+    - @tweet.body.each do |k,v|
+      %tr
+        %th=k
+        %td=simple_format v.pretty_inspect

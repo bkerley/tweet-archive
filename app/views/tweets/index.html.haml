@@ -1,4 +1,10 @@
 #tweets
   - @tweets.each do |t|
     = div_for t do
-      %p=t.text.html_safe
+      %p= t.text.html_safe
+      %nav
+        %ul
+          %li= link_to t.created_at, tweet_path(t.id_number)
+          %li= t.body['source'].html_safe
+          - unless t.geo_text.blank?
+            %li= image_tag gmap_url t
