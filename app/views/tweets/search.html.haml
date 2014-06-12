@@ -1,2 +1,7 @@
+%h1
+  search results for
+  %span.query
+    = @query
+
 #tweets
   = render partial: 'tweet', collection: @tweets

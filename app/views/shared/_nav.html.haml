@@ -1,0 +1,9 @@
+%nav
+  %ul
+    %li.title BonzoESC Tweet Archive
+    %li= link_to 'Newest', tweets_path
+    %li= link_to 'Geo', geo_tweets_path
+    %li
+      = form_tag(search_tweets_path, method: 'get') do
+        = text_field_tag :q, params[:q]
+        = submit_tag 'search'
