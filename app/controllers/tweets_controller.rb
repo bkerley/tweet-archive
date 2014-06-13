@@ -1,36 +1,33 @@
 class TweetsController < ApplicationController
   def index
-    @tweets = Tweet.
-      limit(100).
-      order(created_at: :desc, id_number: :desc)
+    @tweets = Tweet.newest_first.limit(100)
   end
 
   def search
     @query = params[:q]
 
+    base = Tweet.limit(100)
     begin
-      @tweets = Tweet.
-        limit(100).
-        where(<<-SQL, q: @query).
+      candidate = base.
+        where(<<-SQL, q: @query)
           to_tsvector('english', text) @@ to_tsquery('english', :q)
         SQL
-        order(created_at: :desc, id_number: :desc)
-      @tweets.count
+      candidate.count
     rescue
-      @tweets = Tweet.
-        limit(100).
+      candidate = base.
         where(<<-SQL, q: @query).
           to_tsvector('english', text) @@ plainto_tsquery('english', :q)
         SQL
-        order(created_at: :desc, id_number: :desc)
     end
+
+    @tweets = candidate.newest_first
   end
 
   def geo
     @tweets = Tweet.
       limit(100).
       where.not(geo_point: nil).
-      order(created_at: :desc, id_number: :desc)
+      newest_first
   end
 
   def show
