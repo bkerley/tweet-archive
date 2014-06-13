@@ -2,17 +2,29 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#tweets
-  .tweet
-    clear: both
-    width: 40em
-    .geo
-      float: right
-      margin: 1em
-    .author
-      float: left
-      text-align: right
-      margin: 1em
+.tweet
+  clear: both
+  width: 50em
+  $middleWidth: 30em
+  $leftWidth: 7em
+  $rightWidth: 8em
+  box-sizing: border-box
+  margin: 0
+  p
+    margin: 0
+  .geo
+    float: right
+    padding: 1em
+    width: $rightWidth
+  .author
+    float: left
+    text-align: right
+    width: $leftWidth
+    padding: 1em
+  .main
+    float: left
+    width: $middleWidth
     p.body
-      width: 30em
-      margin: 1em
+      padding: 1em
+    nav
+      padding: 1em

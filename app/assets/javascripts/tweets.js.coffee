@@ -3,6 +3,3 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 jQuery ($) ->
-  $('#tweets').on 'click', '.tweet nav p a', (event) ->
-    $(event.target).parent().next('ul').toggle()
-    event.stopPropagation

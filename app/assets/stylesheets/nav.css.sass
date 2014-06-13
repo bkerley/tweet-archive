@@ -1,0 +1,19 @@
+$navHeight: 4em
+
+body
+  padding-top: $navHeight
+nav#global
+  display: fixed
+  top: 0
+  margin-top: -$navHeight
+  height: $navHeight
+  ul
+    list-style-type: none
+    padding-left: 0
+    li
+      display: inline-block
+      float: right
+      padding: 1em
+      &.title
+        float: left
+      
