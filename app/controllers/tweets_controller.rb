@@ -15,7 +15,7 @@ class TweetsController < ApplicationController
       candidate.count
     rescue
       candidate = base.
-        where(<<-SQL, q: @query).
+        where(<<-SQL, q: @query)
           to_tsvector('english', text) @@ plainto_tsquery('english', :q)
         SQL
     end
