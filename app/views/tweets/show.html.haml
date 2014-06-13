@@ -1,10 +1,67 @@
-%p= @tweet.text.html_safe
-%p
-  Tweet id #{@tweet.id_number}
-  posted at #{@tweet.created_at}
+= render partial: 'tweet', object: @tweet
+
+%br.clear
+
+%h1 On Twitter
+%dl.on_twitter
+  %dt Link
+  %dd= link_to "https://twitter.com/#{@tweet.body['user']['screen_name']}/#{@tweet.id_str}", "https://twitter.com/#{@tweet.body['user']['screen_name']}/#{@tweet.id_str}"
+
+%h1 Data
+
+%h2 Mentions
+%ul.mentions
+  - @tweet.body['entities']['user_mentions'].each do |m|
+    %li
+      %span.screenname
+        = link_to m['screen_name'], "https://twitter.com/#{m['screen_name']}"
+      \/
+      %span.name
+        = m['name']
+
+%h2 Media
+%ul.media
+  - @tweet.body['entities']['media'].each do |m|
+    %li
+      = link_to m['expanded_url']
+
+%h2 Hashtags
+%ul.hashtags
+  - @tweet.body['entities']['hashtags'].each do |t|
+    %li
+      = link_to t['text'], "https://twitter.com/hashtag/#{t['text']}"
+
+%h2 URLs
+%ul.urls
+  - @tweet.body['entities']['urls'].each do |u|
+    %li
+      %span.shortened= link_to u['url'], u['url']
+      \/
+      %span.expanded= link_to u['display_url'], u['expanded_url']
+
+%h2 Geo
+- if @tweet.geo_text?
+  = image_tag gmap_url @tweet
+  = image_tag mq_url @tweet
+  %dl
+    %dt Latitude & Longitude
+    %dd
+      = @tweet.latlong.join ', '
+    %dt Apple Maps
+    %dd
+      - l = "http://maps.apple.com/?sspn=#{@tweet.latlong.join(',')}"
+      = link_to l, l
+    %dt Google Maps
+    %dd
+      - l = "https://maps.google.com/?ll=#{@tweet.latlong.join(',')}"
+      = link_to l, l
+
+%h1 Everything
+
 %table
   %tbody
     - @tweet.body.each do |k,v|
       %tr
         %th=k
-        %td=simple_format v.pretty_inspect
+        %td
+          %pre= v.pretty_inspect

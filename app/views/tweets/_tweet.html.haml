@@ -5,13 +5,8 @@
     = image_tag tweet.body['user']['profile_image_url_https']
     %p.name= tweet.body['user']['name']
     %p.screenname @#{tweet.body['user']['screen_name']}
-  %p.body= tweet.text.html_safe
-  %nav
-    %p
-      %a{href: '#', data: 'more data'} +
-    %ul{style: 'display: none'}
-      %li= link_to tweet.created_at, tweet_path(tweet.id)
-      %li= tweet.body['source'].html_safe
-      %li
-        other fields:
-        = tweet.body.keys.join ', '
+  .main
+    %p.body= tweet.text.html_safe
+    %nav
+      %p
+        = link_to tweet.created_at, tweet_path(tweet.id)
