@@ -1,12 +1,12 @@
-= div_for tweet do
-  - unless tweet.geo_text.blank?
-    .geo= image_tag gmap_url tweet
+= div_for tweet, class: (tweet.geo_text? ? 'with-geo' : 'no-geo')  do
   .author
     = image_tag tweet.body['user']['profile_image_url_https']
     %p.name= tweet.body['user']['name']
     %p.screenname @#{tweet.body['user']['screen_name']}
-  .main
-    %p.body= tweet.text.html_safe
+  .body
+    %p= tweet.text.html_safe
     %nav
       %p
         = link_to tweet.created_at, tweet_path(tweet.id)
+  - unless tweet.geo_text.blank?
+    .geo= image_tag gmap_url tweet

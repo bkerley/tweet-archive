@@ -1,12 +1,26 @@
-= render partial: 'tweet', object: @tweet
+%h1
+  A tweet from
+  = time_ago_in_words @tweet.created_at
+  ago
+
+%section#tweet
+  = render partial: 'tweet', object: @tweet
 
 %br.clear
 
-%h1 On Twitter
-%dl.on_twitter
-  %dt Link
-  %dd= link_to "https://twitter.com/#{@tweet.body['user']['screen_name']}/#{@tweet.id_str}", "https://twitter.com/#{@tweet.body['user']['screen_name']}/#{@tweet.id_str}"
-
+%section#on_twitter
+  %h1 On Twitter
+  %dl
+    %dt Link
+    %dd
+      - l = "https://twitter.com/#{@tweet.body['user']['screen_name']}/#{@tweet.id_str}"
+      = link_to l, l
+    - if @tweet.body['in_reply_to_screen_name']
+      %dt In reply to:
+      %dd
+        - l = "https://twitter.com/#{@tweet.body['in_reply_to_screen_name']}/#{@tweet.body['in_reply_to_status_id_str']}"
+        = link_to l, l
+    
 %h1 Data
 
 %h2 Mentions
@@ -20,10 +34,13 @@
         = m['name']
 
 %h2 Media
-%ul.media
+%dl.media
   - @tweet.body['entities']['media'].each do |m|
-    %li
+    %dt
       = link_to m['expanded_url']
+    %dd
+      = image_tag m['media_url_https']
+      
 
 %h2 Hashtags
 %ul.hashtags
@@ -39,22 +56,24 @@
       \/
       %span.expanded= link_to u['display_url'], u['expanded_url']
 
-%h2 Geo
-- if @tweet.geo_text?
-  = image_tag gmap_url @tweet
-  = image_tag mq_url @tweet
-  %dl
-    %dt Latitude & Longitude
-    %dd
-      = @tweet.latlong.join ', '
-    %dt Apple Maps
-    %dd
-      - l = "http://maps.apple.com/?sspn=#{@tweet.latlong.join(',')}"
-      = link_to l, l
-    %dt Google Maps
-    %dd
-      - l = "https://maps.google.com/?ll=#{@tweet.latlong.join(',')}"
-      = link_to l, l
+%section#geo
+  %h2 Geo
+  - unless @tweet.geo_text.blank?
+    %dl
+      %dt Latitude & Longitude
+      %dd
+        = @tweet.latlong.join ', '
+      %dt Apple Maps
+      %dd
+        - l = "http://maps.apple.com/?sspn=#{@tweet.latlong.join(',')}"
+        = link_to l, l
+      %dt Google Maps
+      %dd
+        - l = "https://maps.google.com/?ll=#{@tweet.latlong.join(',')}"
+        = link_to l, l
+    .tiles
+      = image_tag gmap_url @tweet
+      = image_tag mq_url @tweet
 
 %h1 Everything
 

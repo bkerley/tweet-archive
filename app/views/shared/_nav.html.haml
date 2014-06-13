@@ -1,9 +1,16 @@
-%nav#global
-  %ul
-    %li.title BonzoESC Tweet Archive
-    %li= link_to 'Newest', tweets_path
-    %li= link_to 'Geo', geo_tweets_path
-    %li
-      = form_tag(search_tweets_path, method: 'get') do
-        = text_field_tag :q, params[:q]
-        = submit_tag 'search'
+%nav.top-bar{data: {topbar: true}}
+  %ul.title-area
+    %li.name
+      %h1=link_to 'BonzoESC Tweet Archive', root_path
+  %section.top-bar-section
+    %ul.right
+      %li= link_to 'Newest', tweets_path
+      %li= link_to 'Geo', geo_tweets_path
+      %li.has-form
+        = form_tag(search_tweets_path, method: 'get') do
+          .row.collapse
+            .large-10.small-9.columns
+              = search_field_tag :q, params[:q]
+            .large-2.small-3.columns
+              %button.button.expand{type: 'submit'}
+                %i.fi-magnifying-glass

@@ -1,30 +1,42 @@
-// Place all the styles related to the tweets controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+/* tweet lists
+#tweets
+  @include grid-column(10)
 
+/* tweet partial
 .tweet
-  clear: both
-  width: 50em
-  $middleWidth: 30em
-  $leftWidth: 7em
-  $rightWidth: 8em
-  box-sizing: border-box
-  margin: 0
-  p
-    margin: 0
-  .geo
-    float: right
-    padding: 1em
-    width: $rightWidth
+  @include grid-row
+  $v-padding: 1em
+  background-color: $table-bg
+  padding-top: $v-padding
+  padding-bottom: $v-padding
+  &:nth-of-type(even) 
+    background: $table-even-row-bg
   .author
-    float: left
+    @include grid-column(3)
+  .body
+    @include grid-column(6)
+  .geo
+    @include grid-column(3)
     text-align: right
-    width: $leftWidth
-    padding: 1em
-  .main
-    float: left
-    width: $middleWidth
-    p.body
-      padding: 1em
-    nav
-      padding: 1em
+  &.no-geo
+    .body
+      @include grid-column(9)
+
+.query
+  &:before
+    content: "“"
+  &:after
+    content: "”"
+
+/* tweet show page
+section
+  &#tweet
+    .tweet
+      @include panel
+  &#geo
+    @include grid-row
+    dl
+      @include grid-column(8)
+    .tiles
+      @include grid-column(4, $collapse: true)
+      @include panel
