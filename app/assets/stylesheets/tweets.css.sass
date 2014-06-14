@@ -15,6 +15,10 @@
     @include grid-column(3)
   .body
     @include grid-column(6)
+    nav ul
+      @include button-group-container
+      & > li
+        @include button-group-style
   .geo
     @include grid-column(3)
     text-align: right

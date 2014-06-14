@@ -5,8 +5,20 @@
     %p.screenname @#{tweet.body['user']['screen_name']}
   .body
     %p= tweet.text.html_safe
+    %p.timestamp.label.secondary
+      = tweet.created_at
+      \/
+      = time_ago_in_words tweet.created_at
+      ago
     %nav
-      %p
-        = link_to tweet.created_at, tweet_path(tweet.id)
+      %ul
+        %li
+          = link_to tweet_path(tweet.id), class: 'button small' do
+            %i.fi-link
+            Permalink
+        %li
+          = link_to "https://twitter.com/#{tweet.body['user']['screen_name']}/status/#{tweet.id_str}", class: 'button small' do
+            %i.fi-social-twitter 
+            on Twitter
   - unless tweet.geo_text.blank?
     .geo= image_tag gmap_url tweet

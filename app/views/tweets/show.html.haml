@@ -13,48 +13,55 @@
   %dl
     %dt Link
     %dd
-      - l = "https://twitter.com/#{@tweet.body['user']['screen_name']}/#{@tweet.id_str}"
+      - l = "https://twitter.com/#{@tweet.body['user']['screen_name']}/status/#{@tweet.id_str}"
       = link_to l, l
     - if @tweet.body['in_reply_to_screen_name']
       %dt In reply to:
       %dd
-        - l = "https://twitter.com/#{@tweet.body['in_reply_to_screen_name']}/#{@tweet.body['in_reply_to_status_id_str']}"
+        - l = "https://twitter.com/#{@tweet.body['in_reply_to_screen_name']}/status/#{@tweet.body['in_reply_to_status_id_str']}"
         = link_to l, l
     
 %h1 Data
 
-%h2 Mentions
-%ul.mentions
-  - @tweet.body['entities']['user_mentions'].each do |m|
-    %li
-      %span.screenname
-        = link_to m['screen_name'], "https://twitter.com/#{m['screen_name']}"
-      \/
-      %span.name
-        = m['name']
+- unless @tweet.body['entities']['user_mentions'].blank?
+  %section#mentions
+    %h2 Mentions
+    %ul
+      - @tweet.body['entities']['user_mentions'].each do |m|
+        %li
+          %span.screenname
+            = link_to m['screen_name'], "https://twitter.com/#{m['screen_name']}"
+          \/
+          %span.name
+            = m['name']
 
-%h2 Media
-%dl.media
-  - @tweet.body['entities']['media'].each do |m|
-    %dt
-      = link_to m['expanded_url']
-    %dd
-      = image_tag m['media_url_https']
+- unless @tweet.body['entities']['media'].blank?
+  %section#media
+    %h2 Media
+    %dl
+      - @tweet.body['entities']['media'].each do |m|
+        %dt
+          = link_to m['expanded_url']
+        %dd
+          = image_tag m['media_url_https']
       
+- unless @tweet.body['entities']['hashtags'].blank?
+  %section#hashtags
+    %h2 Hashtags
+    %ul
+      - @tweet.body['entities']['hashtags'].each do |t|
+        %li
+          = link_to t['text'], "https://twitter.com/hashtag/#{t['text']}"
 
-%h2 Hashtags
-%ul.hashtags
-  - @tweet.body['entities']['hashtags'].each do |t|
-    %li
-      = link_to t['text'], "https://twitter.com/hashtag/#{t['text']}"
-
-%h2 URLs
-%ul.urls
-  - @tweet.body['entities']['urls'].each do |u|
-    %li
-      %span.shortened= link_to u['url'], u['url']
-      \/
-      %span.expanded= link_to u['display_url'], u['expanded_url']
+- unless @tweet.body['entities']['urls'].blank?
+  %section#urls
+    %h2 URLs
+    %ul
+      - @tweet.body['entities']['urls'].each do |u|
+        %li
+          %span.shortened= link_to u['url'], u['url']
+          \/
+          %span.expanded= link_to u['display_url'], u['expanded_url']
 
 %section#geo
   %h2 Geo
