@@ -7,4 +7,6 @@ Rails.application.routes.draw do
       get 'geo'
     end
   end
+
+  get 'maps', to: 'maps#index'
 end
