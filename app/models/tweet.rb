@@ -14,8 +14,9 @@ class Tweet < ActiveRecord::Base
     candidate.id_number = api_tweet.id
     candidate.created_at = api_tweet.created_at
     candidate.save
-    unless api_tweet.geo.nil?
-      stmt = "geo_point = ST_MakePoint(#{api_tweet.geo.lat.to_f}, #{api_tweet.geo.lng.to_f})"
+    if coords = api_tweet[:coordinates]
+      long, lat = coords[:coordinates]
+      stmt = "geo_point = ST_MakePoint(#{long}, #{lat})"
       where(id: candidate.id).
         update_all(stmt)
     end
