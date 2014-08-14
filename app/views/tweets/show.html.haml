@@ -13,13 +13,11 @@
   %dl
     %dt Link
     %dd
-      - l = "https://twitter.com/#{@tweet.body['user']['screen_name']}/status/#{@tweet.id_str}"
-      = link_to l, l
+      = show_link_to "https://twitter.com/#{@tweet.body['user']['screen_name']}/status/#{@tweet.id_str}"
     - if @tweet.body['in_reply_to_screen_name']
       %dt In reply to:
       %dd
-        - l = "https://twitter.com/#{@tweet.body['in_reply_to_screen_name']}/status/#{@tweet.body['in_reply_to_status_id_str']}"
-        = link_to l, l
+        = show_link_to "https://twitter.com/#{@tweet.body['in_reply_to_screen_name']}/status/#{@tweet.body['in_reply_to_status_id_str']}"
     
 %h1 Data
 
@@ -41,9 +39,10 @@
     %dl
       - @tweet.body['entities']['media'].each do |m|
         %dt
-          = link_to m['expanded_url']
-        %dd
           = image_tag m['media_url_https']
+        %dd
+          %p= show_link_to m['expanded_url']
+          %p= show_link_to "#{m['media_url_https']}:large"
       
 - unless @tweet.body['entities']['hashtags'].blank?
   %section#hashtags
@@ -56,12 +55,10 @@
 - unless @tweet.body['entities']['urls'].blank?
   %section#urls
     %h2 URLs
-    %ul
+    %dl
       - @tweet.body['entities']['urls'].each do |u|
-        %li
-          %span.shortened= link_to u['url'], u['url']
-          \/
-          %span.expanded= link_to u['display_url'], u['expanded_url']
+        %dt= show_link_to u['url']
+        %dd= show_link_to u['expanded_url']
 
 %section#geo
   %h2 Geo
