@@ -1,0 +1,7 @@
+- content_for :head do
+  %link(rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css")
+- content_for :tail do
+  %script(src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js")
+  %script{src: "http://www.mapquestapi.com/sdk/leaflet/v1.0/mq-map.js?key=#{ENV['MAPQUEST_KEY']}"}
+
+#leaflet{data: {update_url: map_path('_')}}

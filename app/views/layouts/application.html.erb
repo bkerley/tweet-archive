@@ -9,6 +9,7 @@
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "vendor/modernizr" %>
     <%= csrf_meta_tags %>
+    <%= yield :head %>
   </head>
 
   <body>
@@ -20,5 +21,6 @@
       </div>
     </section>
     <%= javascript_include_tag "application" %>
+    <%= yield :tail %>
   </body>
 </html>

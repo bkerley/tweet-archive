@@ -8,5 +8,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'maps', to: 'maps#index'
+  get 'maps', to: 'maps#index', as: 'maps'
+  get 'maps/*bbox', to: 'maps#show', as: 'map', format: false
 end
