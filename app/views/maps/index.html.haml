@@ -1,7 +1,14 @@
-- content_for :head do
-  %link(rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css")
 - content_for :tail do
-  %script(src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js")
   %script{src: "http://www.mapquestapi.com/sdk/leaflet/v1.0/mq-map.js?key=#{ENV['MAPQUEST_KEY']}"}
 
+.row
+  .small-8.columns 
+    %h1 Map of tweets
+  .small-4.columns#counter
+    %p {{ count }} tweets
 #leaflet{data: {update_url: map_path('_')}}
+
+#popup{style: 'display: none'}
+  %p {{ text }}
+  %p
+    = link_to "{{ created_at }}", '{{link}}'

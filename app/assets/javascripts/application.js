@@ -13,6 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require foundation
+//= require leaflet
+//= require handlebars
+//= require_tree ./templates
 //= require_tree .
 
 $(function(){ $(document).foundation(); });

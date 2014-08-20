@@ -12,6 +12,11 @@ jQuery ($) ->
   class MapUpdater
     constructor: ->
       @markers = []
+      @counter = $('#counter')
+      @counterTemplate = Handlebars.compile @counter.html()
+      @counter.html ''
+      @popupTemplate = Handlebars.compile $('#popup').html()
+      @updateBounds()
     updateBounds: (event) =>
       bounds = map.getBounds()
       $.ajax
@@ -22,14 +27,19 @@ jQuery ($) ->
     showTweets: (data, status, jqx) =>
       for marker in @markers
         map.removeLayer marker
-      @markers = for tweet in data
+
+      @counter.html @counterTemplate data  
+      @markers = for tweet in data.tweets
         marker = L.marker [tweet.lat, tweet.long],
           title: tweet.text
-
+        marker.bindPopup(@popupContent tweet)
         marker.addTo map
     urlForBounds: (bounds) ->
       updateUrl.replace /_$/, bounds.toBBoxString()
+    popupContent: (tweet) ->
+      @popupTemplate tweet
 
   updater = new MapUpdater
 
   map.on 'moveend', updater.updateBounds
+  updater.updateBounds

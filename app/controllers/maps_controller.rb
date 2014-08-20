@@ -3,8 +3,17 @@ class MapsController < ApplicationController
   end
 
   def show
-    @tweets = Tweet.in_bbox params[:bbox]
+    @tweets = Tweet.in_bbox(params[:bbox]).limit(100).as_json.map do |t|
+      t['link'] = tweet_path(t['id'])
+      t
+    end
+    @counter = Tweet.unscoped.in_bbox(params[:bbox]).count
     
-    render json: @tweets.as_json
+    json = { 
+      tweets: @tweets,
+      count: @counter
+    }
+
+    render json: json
   end
 end
