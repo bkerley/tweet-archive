@@ -5,7 +5,8 @@
   %section.top-bar-section
     %ul.right
       %li= link_to 'Newest', tweets_path
-      %li= link_to 'Geo', geo_tweets_path
+      %li= link_to 'with Geo', geo_tweets_path
+      %li= link_to 'Map', maps_path
       %li.has-form
         = form_tag(search_tweets_path, method: 'get') do
           .row.collapse
