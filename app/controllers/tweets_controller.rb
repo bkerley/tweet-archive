@@ -30,6 +30,19 @@ class TweetsController < ApplicationController
       newest_first
   end
 
+  def around
+    @base = Tweet.find params[:id]
+    @tweets = Tweet.
+      limit(50).
+      where('created_at < ?', @base.created_at).
+      order(created_at: :desc).reverse
+    @tweets += [@base]
+    @tweets += Tweet.
+      limit(50).
+      where('created_at > ?', @base.created_at).
+      order(created_at: :asc)
+  end
+
   def show
     id = params[:id]
 

@@ -6,6 +6,9 @@ Rails.application.routes.draw do
       get 'search'
       get 'geo'
     end
+    member do
+      get 'around'
+    end
   end
 
   get 'maps', to: 'maps#index', as: 'maps'

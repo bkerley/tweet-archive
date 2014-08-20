@@ -13,12 +13,16 @@
     %nav
       %ul
         %li
-          = link_to tweet_path(tweet.id), class: 'button small' do
+          = link_to tweet_path(tweet.id), class: 'button tiny' do
             %i.fi-link
             Permalink
         %li
-          = link_to "https://twitter.com/#{tweet.body['user']['screen_name']}/status/#{tweet.id_str}", class: 'button small' do
+          = link_to "https://twitter.com/#{tweet.body['user']['screen_name']}/status/#{tweet.id_str}", class: 'button tiny' do
             %i.fi-social-twitter 
             on Twitter
+        %li
+          = link_to around_tweet_path(tweet.id), class: 'button tiny' do
+            %i.fi-clock
+            around then
   - unless tweet.geo_text.blank?
     .geo= image_tag gmap_url tweet
