@@ -29,6 +29,6 @@ class Tweet < ActiveRecord::Base
     point = "cast(geo_point as geometry)"
     membership = "#{box} ~ #{point}"
 
-    where(membership).limit(50)
+    where(membership)
   end
 end
