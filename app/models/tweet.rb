@@ -19,6 +19,8 @@ class Tweet < ActiveRecord::Base
       stmt = "geo_point = ST_MakePoint(#{long}, #{lat})"
       where(id: candidate.id).
         update_all(stmt)
+    elsif api_tweet[:place][:bounding_box][:coordinates]
+      place_to_geo_point
     end
   end
 
@@ -30,5 +32,16 @@ class Tweet < ActiveRecord::Base
     membership = "#{box} ~ #{point}"
 
     where(membership)
+  end
+
+  def place_to_geo_point
+    return if geo_point?
+    coords = body['place']['bounding_box']['coordinates'].first rescue return
+
+    stmt = "geo_point = ST_Centroid(ST_MakeEnvelope(#{ coords[0][0] }, #{ coords[0][1] }, #{ coords[2][0] }, #{ coords[2][1] }))"
+
+    # points = coords.map{ |(long, lat)| "ST_Point(#{long}, #{lat})" }
+    # stmt = "geo_point = ST_Centroid(#{points.join ', '})"
+    self.class.where(id: id).update_all(stmt)
   end
 end
