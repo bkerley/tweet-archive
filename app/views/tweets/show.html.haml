@@ -59,6 +59,29 @@
       - @tweet.body['entities']['urls'].each do |u|
         %dt= show_link_to u['url']
         %dd= show_link_to u['expanded_url']
+- if @tweet.in_reply_to_status_id?
+  %section#reply
+    %h2 In Reply To
+    %dl
+      %dt Permalink
+      %dd
+        - l = "https://twitter.com/#{@tweet.body['in_reply_to_screen_name']}/status/#{@tweet.in_reply_to_status_id}"
+        = link_to l, l
+      - if mine = Tweet.where(retweeted_status_id: @tweet.in_reply_to_status_id).take
+        %dt I retweeted it
+        %dd= link_to mine.body['retweeted_status']['text'], mine
+- if @tweet.retweeted_status_id
+  - rt = @tweet.body['retweeted_status']
+  %section#retweet
+    %h2 Retweet
+    %dl
+      %dt Author
+      %dd
+        = link_to "https://twitter.com/#{rt['user']['name']}"
+      %dt Text
+      %dd= simple_format rt['text']
+      %dt Permalink
+      %dd= link_to rt['created_at'], twitter_url(rt)
 
 %section#geo
   %h2 Geo
@@ -69,7 +92,7 @@
         = @tweet.latlong.join ', '
       %dt Apple Maps
       %dd
-        - l = "http://maps.apple.com/?sspn=#{@tweet.latlong.join(',')}"
+        - l = "http://maps.apple.com/?ll=#{@tweet.latlong.join(',')}"
         = link_to l, l
       %dt Google Maps
       %dd
