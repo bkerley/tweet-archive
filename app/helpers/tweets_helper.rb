@@ -16,4 +16,8 @@ module TweetsHelper
   rescue 
     ''
   end
+
+  def twitter_url(tweet)
+    "https://twitter.com/#{tweet.body['user']['screen_name']}/status/#{tweet.id_str}"
+  end
 end
