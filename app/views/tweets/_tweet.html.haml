@@ -4,7 +4,7 @@
     %p.name= tweet.body['user']['name']
     %p.screenname @#{tweet.body['user']['screen_name']}
   .body
-    %p= tweet.text.html_safe
+    .tweet_text= simple_format tweet.text.html_safe
     %p.timestamp.label.secondary
       = tweet.created_at
       \/
@@ -17,7 +17,7 @@
             %i.fi-link
             Permalink
         %li
-          = link_to "https://twitter.com/#{tweet.body['user']['screen_name']}/status/#{tweet.id_str}", class: 'button tiny' do
+          = link_to twitter_url(tweet), class: 'button tiny' do
             %i.fi-social-twitter 
             on Twitter
         %li
