@@ -11,15 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140814151955) do
+ActiveRecord::Schema.define(version: 20141011133910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
   enable_extension "postgis"
+  enable_extension "uuid-ossp"
 
-  create_table "spatial_ref_sys", id: false, force: true do |t|
-    t.integer "srid",                   null: false
+  create_table "spatial_ref_sys", primary_key: "srid", force: true do |t|
     t.string  "auth_name", limit: 256
     t.integer "auth_srid"
     t.string  "srtext",    limit: 2048
@@ -32,10 +31,18 @@ ActiveRecord::Schema.define(version: 20140814151955) do
     t.json     "body"
     t.decimal  "id_number"
     t.datetime "created_at"
-    t.integer  "geo_point",  limit: 0
+    t.integer  "geo_point",                  limit: 0
+    t.string   "default_image_file_name"
+    t.string   "default_image_content_type"
+    t.integer  "default_image_file_size"
+    t.datetime "default_image_updated_at"
+    t.string   "retweeted_status_id"
+    t.string   "in_reply_to_status_id"
   end
 
   add_index "tweets", ["geo_point"], name: "index_tweets_on_geo_point", using: :gist
   add_index "tweets", ["id_number"], name: "index_tweets_on_id_number", unique: true, using: :btree
+  add_index "tweets", ["in_reply_to_status_id"], name: "index_tweets_on_in_reply_to_status_id", using: :btree
+  add_index "tweets", ["retweeted_status_id"], name: "index_tweets_on_retweeted_status_id", using: :btree
 
 end
