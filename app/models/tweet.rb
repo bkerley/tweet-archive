@@ -13,14 +13,19 @@ class Tweet < ActiveRecord::Base
     candidate.body = api_tweet.to_json
     candidate.id_number = api_tweet.id
     candidate.created_at = api_tweet.created_at
+
+    candidate.extract_retweet_data
+    candidate.extract_reply_data
+
     candidate.save
-    if coords = api_tweet[:coordinates]
+
+    if coords = api_tweet.try(:coordinates)
       long, lat = coords[:coordinates]
       stmt = "geo_point = ST_MakePoint(#{long}, #{lat})"
       where(id: candidate.id).
         update_all(stmt)
-    elsif api_tweet[:place][:bounding_box][:coordinates]
-      place_to_geo_point
+    elsif api_tweet.try(:place)
+      candidate.place_to_geo_point
     end
   end
 
@@ -38,10 +43,22 @@ class Tweet < ActiveRecord::Base
     return if geo_point?
     coords = body['place']['bounding_box']['coordinates'].first rescue return
 
-    stmt = "geo_point = ST_Centroid(ST_MakeEnvelope(#{ coords[0][0] }, #{ coords[0][1] }, #{ coords[2][0] }, #{ coords[2][1] }))"
+    coords_args = [coords[0], coords[2]].flatten.map(&:to_f).map(&:to_s).join(', ')
+
+    stmt = "geo_point = ST_Centroid(ST_MakeEnvelope(#{ coords_args }))"
 
     # points = coords.map{ |(long, lat)| "ST_Point(#{long}, #{lat})" }
     # stmt = "geo_point = ST_Centroid(#{points.join ', '})"
     self.class.where(id: id).update_all(stmt)
+  end
+
+  def extract_retweet_data
+    return unless body['retweeted_status']
+    self.retweeted_status_id = body['retweeted_status_id']
+  end
+
+  def extract_reply_data
+    return unless body['in_reply_to_status_id']
+    self.in_reply_to_status_id = body['in_reply_to_status_id']
   end
 end
