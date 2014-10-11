@@ -18,6 +18,10 @@ module TweetsHelper
   end
 
   def twitter_url(tweet)
-    "https://twitter.com/#{tweet.body['user']['screen_name']}/status/#{tweet.id_str}"
+    body = tweet.try(:body) || tweet
+    user = body['user']
+    screen_name = user['screen_name']
+    id = tweet.try(:id_str) || tweet['id_str']
+    "https://twitter.com/#{screen_name}/status/#{id}"
   end
 end
