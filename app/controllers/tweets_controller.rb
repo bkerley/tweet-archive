@@ -1,5 +1,6 @@
 class TweetsController < ApplicationController
   def index
+    @title = "Recent Tweets"
     @tweets = Tweet.newest_first.limit(100)
   end
 
@@ -51,5 +52,13 @@ class TweetsController < ApplicationController
     else
       @tweet = Tweet.find_by id: id
     end
+  end
+
+  def census
+    @census = Tweet.newest_first.limit(1000).select(:id_str, :created_at)
+  end
+
+  def paged_tweet
+    Tweet.offset params[:page] * 50
   end
 end

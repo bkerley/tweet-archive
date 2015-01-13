@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     collection do
       get 'search'
       get 'geo'
+      get 'census'
     end
     member do
       get 'around'
