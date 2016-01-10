@@ -39,6 +39,8 @@ gem 'haml-rails', '~> 0.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'paperclip'
+
 # Use unicorn as the app server
 # gem 'unicorn'
 
