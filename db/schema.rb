@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141011133910) do
+ActiveRecord::Schema.define(version: 20160110153000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,11 +38,16 @@ ActiveRecord::Schema.define(version: 20141011133910) do
     t.datetime "default_image_updated_at"
     t.string   "retweeted_status_id"
     t.string   "in_reply_to_status_id"
+    t.decimal  "user_id"
+    t.string   "user_display_name"
+    t.string   "user_screen_name"
   end
 
   add_index "tweets", ["geo_point"], name: "index_tweets_on_geo_point", using: :gist
   add_index "tweets", ["id_number"], name: "index_tweets_on_id_number", unique: true, using: :btree
   add_index "tweets", ["in_reply_to_status_id"], name: "index_tweets_on_in_reply_to_status_id", using: :btree
   add_index "tweets", ["retweeted_status_id"], name: "index_tweets_on_retweeted_status_id", using: :btree
+  add_index "tweets", ["user_id"], name: "index_tweets_on_user_id", using: :btree
+  add_index "tweets", ["user_screen_name"], name: "index_tweets_on_user_screen_name", using: :btree
 
 end
