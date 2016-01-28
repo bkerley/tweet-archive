@@ -54,6 +54,12 @@ class TweetsController < ApplicationController
     end
   end
 
+  def populate_references
+    @tweet = Tweet.find_by id: params[:id]
+    @tweet.populate_missing_references
+    redirect_to @tweet
+  end
+
   def census
     @census = Tweet.newest_first.limit(2000).select(:id_str, :created_at)
   end

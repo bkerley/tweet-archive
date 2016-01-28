@@ -1,8 +1,9 @@
 = div_for tweet, class: (tweet.geo_text? ? 'with-geo' : 'no-geo')  do
   .author
     = image_tag tweet.body['user']['profile_image_url_https']
-    %p.name= tweet.body['user']['name']
-    %p.screenname @#{tweet.body['user']['screen_name']}
+    %p.name= tweet.user_display_name
+    %p.screenname @#{tweet.user_screen_name}
+    %p.user_id= tweet.user_id.round
   .body
     .tweet_text= simple_format tweet.text.html_safe
     %p.timestamp.label.secondary
@@ -18,7 +19,7 @@
             Permalink
         %li
           = link_to twitter_url(tweet), class: 'button tiny' do
-            %i.fi-social-twitter 
+            %i.fi-social-twitter
             on Twitter
         %li
           = link_to around_tweet_path(tweet.id), class: 'button tiny' do
