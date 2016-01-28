@@ -13,6 +13,9 @@ class Tweet < ActiveRecord::Base
     candidate.body = api_tweet.to_json
     candidate.id_number = api_tweet.id
     candidate.created_at = api_tweet.created_at
+    candidate.user_id = api_tweet.user.id
+    candidate.user_display_name = api_tweet.user.name
+    candidate.user_screen_name = api_tweet.user.screen_name
 
     candidate.extract_retweet_data
     candidate.extract_reply_data
@@ -60,5 +63,37 @@ class Tweet < ActiveRecord::Base
   def extract_reply_data
     return unless body['in_reply_to_status_id']
     self.in_reply_to_status_id = body['in_reply_to_status_id']
+  end
+
+  def status_ids_referred_to
+    @status_ids_referred_to ||= [
+      body['in_reply_to_status_id']&.to_i,
+      body['retweeted_status']&.[]('id')&.to_i,
+      body['retweeted_status']&.[]('in_reply_to_status_id')&.to_i
+    ].compact
+  end
+
+  def statuses_referred_to
+    Tweet.where(id_number: status_ids_referred_to).all
+  end
+
+  def missing_references
+    return @missing_references if defined? @missing_references
+    references = status_ids_referred_to
+    found_references = Tweet.
+                       unscoped.
+                       where(id_number: references).
+                       select(:id_number).
+                       map(&:id_number).
+                       map(&:to_i)
+
+    @missing_references = references - found_references
+  end
+
+  def populate_missing_references
+    found_references = TWITTER_CLIENT.statuses missing_references
+    found_references.each do |api_tweet|
+      Tweet.from_api api_tweet
+    end
   end
 end
