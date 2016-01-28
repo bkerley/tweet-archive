@@ -9,10 +9,14 @@
   background-color: $table-bg
   padding-top: $v-padding
   padding-bottom: $v-padding
-  &:nth-of-type(even) 
+  &:nth-of-type(even)
     background: $table-even-row-bg
   .author
     @include grid-column(3)
+    p
+      margin-bottom: 0
+      &.user_id
+        @extend small
   .body
     @include grid-column(6)
     nav ul
