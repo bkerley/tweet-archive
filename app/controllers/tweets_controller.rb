@@ -52,6 +52,8 @@ class TweetsController < ApplicationController
     else
       @tweet = Tweet.find_by id: id
     end
+
+    fail ActiveRecord::RecordNotFound unless @tweet
   end
 
   def populate_references
@@ -61,7 +63,7 @@ class TweetsController < ApplicationController
   end
 
   def census
-    @census = Tweet.newest_first.limit(2000).select(:id_str, :created_at)
+    @census = Tweet.newest_first.limit(3000).select(:id_str, :created_at)
   end
 
   def paged_tweet
