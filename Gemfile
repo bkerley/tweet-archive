@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.1.1'
+gem 'rails', '~> 4.1'
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # gem 'activerecord-postgis-adapter'
@@ -16,7 +16,7 @@ gem 'coffee-rails'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
-gem 'foundation-rails'
+gem 'foundation-rails', '~> 5.5'
 gem 'foundation-icons-sass-rails'
 gem 'twitter'
 gem 'pry-rails'
