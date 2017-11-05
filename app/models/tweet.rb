@@ -1,6 +1,7 @@
 class Tweet < ActiveRecord::Base
   default_scope { select('*, ST_X(ST_Transform(cast(geo_point as geometry), 4326)) as long, ST_Y(ST_Transform(cast(geo_point as geometry), 4326)) as lat, ST_AsText(geo_point) as geo_text') }
   scope :newest_first, -> { order(created_at: :desc, id_number: :desc) }
+  has_many :attachments
 
   def latlong
     [lat, long]
