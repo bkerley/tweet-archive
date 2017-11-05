@@ -19,6 +19,14 @@
       %dd
         = show_link_to "https://twitter.com/#{@tweet.body['in_reply_to_screen_name']}/status/#{@tweet.body['in_reply_to_status_id_str']}"
 
+- unless @tweet.attachments.empty?
+  %section#attachments
+    %h1 Attachments
+    %ul
+    - @tweet.attachments.each do |a|
+      %li= image_tag a.file
+
+
 - unless @tweet.statuses_referred_to.blank? && @tweet.missing_references.blank?
   %section#references
   %h1 References
