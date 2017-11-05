@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Tweet:
+  = @attachment.tweet
+%p
+  %b Media attachment:
+  = @attachment.media_attachment_id
+%p
+  %b Index:
+  = @attachment.index
+%p
+  %b File:
+  = @attachment.file
+
+= link_to 'Edit', edit_attachment_path(@attachment)
+\|
+= link_to 'Back', attachments_path

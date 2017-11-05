@@ -11,12 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171029180302) do
+ActiveRecord::Schema.define(version: 20171105190143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "postgis"
   enable_extension "uuid-ossp"
+  enable_extension "postgis"
+
+  create_table "attachments", force: :cascade do |t|
+    t.uuid     "tweet_id"
+    t.integer  "media_attachment_id"
+    t.integer  "index"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "attachments", ["tweet_id"], name: "index_attachments_on_tweet_id", using: :btree
 
   create_table "mastodons", force: :cascade do |t|
     t.uuid     "tweet_id"
@@ -37,5 +51,6 @@ ActiveRecord::Schema.define(version: 20171029180302) do
 # Could not dump table "tweets" because of following StandardError
 #   Unknown type 'geography(Point,4326)' for column 'geo_point'
 
+  add_foreign_key "attachments", "tweets"
   add_foreign_key "mastodons", "tweets"
 end
