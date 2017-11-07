@@ -40,6 +40,7 @@ gem 'haml-rails', '~> 0.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 gem 'paperclip'
+gem 'aws-sdk'
 
 # Use unicorn as the app server
 # gem 'unicorn'
