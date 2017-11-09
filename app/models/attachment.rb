@@ -4,5 +4,5 @@ class Attachment < ActiveRecord::Base
   has_attached_file :file
   validates :file,
             attachment_presence: true,
-            attachment_content_type: { content_type: %w{image/jpeg} }
+            attachment_content_type: { content_type: %w{image/jpeg video/mp4} }
 end
