@@ -75,6 +75,17 @@ class Tweet < ActiveRecord::Base
     end.compact
   end
 
+  def gif_urls
+    media_entities = body['extended_entities']['media'] rescue nil
+    return [] if media_entities.blank?
+
+    media_entities.map do |me|
+      next nil unless 'animated_gif' == me['type']
+
+      me['video_info']['variants'].first['url']
+    end
+  end
+
   def place_to_geo_point
     return if geo_point?
     coords = body['place']['bounding_box']['coordinates'].first rescue return
