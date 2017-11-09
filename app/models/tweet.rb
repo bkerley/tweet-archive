@@ -43,6 +43,38 @@ class Tweet < ActiveRecord::Base
     where(membership)
   end
 
+  def image_urls
+    media_entities = body['extended_entities']['media'] rescue nil
+    return [] if media_entities.blank?
+
+    media_entities.map do |me|
+      next nil unless 'photo' == me['type']
+
+      size_hash = Hash[me['sizes'].keys.zip(me['sizes'].keys)]
+      best_size = size_hash.
+                    values_at(*%w{large medium small thumb}).
+                    compact.
+                    first
+
+      me['media_url_https'] + ':' + best_size
+    end.compact
+  end
+
+  def video_urls
+    media_entities = body['extended_entities']['media'] rescue nil
+    return [] if media_entities.blank?
+
+    media_entities.map do |me|
+      next nil unless 'video' == me['type']
+
+      best_variant = me['video_info']['variants'].sort_by do |var|
+        var['bitrate'] || 0 # skips over m3u8 streams
+      end.last
+
+      best_variant['url']
+    end.compact
+  end
+
   def place_to_geo_point
     return if geo_point?
     coords = body['place']['bounding_box']['coordinates'].first rescue return
