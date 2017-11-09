@@ -43,6 +43,29 @@ class Tweet < ActiveRecord::Base
     where(membership)
   end
 
+  def copy_media
+    print id
+
+    index = 1
+    url_classes = { image: image_urls,
+                     video: video_urls,
+                     gif: gif_urls }
+
+
+    url_classes.each do |k, urls|
+      urls.each do |u|
+        a = self.attachments.build(index: index,
+                                   file: URI.parse(u),
+                                   flavor: k.to_s)
+        a.save
+        index += 1
+        print '.'
+      end
+    end
+
+    puts
+  end
+
   def image_urls
     media_entities = body['extended_entities']['media'] rescue nil
     return [] if media_entities.blank?
