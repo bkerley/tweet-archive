@@ -15,7 +15,7 @@ namespace :media do
       attachment = Attachment.new tweet: tweet, index: 1
       attachment.file = File.open jpeg
       attachment.save
-      p basename
+      p attachment.file.url
     end
   end
 end
