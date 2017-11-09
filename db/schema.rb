@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171105190143) do
+ActiveRecord::Schema.define(version: 20171109043602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20171105190143) do
     t.datetime "file_updated_at"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.string   "flavor"
   end
 
   add_index "attachments", ["tweet_id"], name: "index_attachments_on_tweet_id", using: :btree
