@@ -76,7 +76,8 @@ CREATE TABLE attachments (
     file_file_size integer,
     file_updated_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    flavor character varying
 );
 
 
@@ -150,7 +151,7 @@ CREATE TABLE tweets (
     id uuid DEFAULT uuid_generate_v4() NOT NULL,
     id_str character varying(255),
     text character varying(255),
-    body json,
+    body jsonb,
     id_number numeric,
     created_at timestamp without time zone,
     geo_point geography(Point,4326),
@@ -216,6 +217,13 @@ CREATE INDEX index_attachments_on_tweet_id ON attachments USING btree (tweet_id)
 --
 
 CREATE INDEX index_mastodons_on_tweet_id ON mastodons USING btree (tweet_id);
+
+
+--
+-- Name: index_tweets_on_body; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tweets_on_body ON tweets USING gin (body);
 
 
 --
@@ -330,4 +338,10 @@ INSERT INTO schema_migrations (version) VALUES ('20160110153000');
 INSERT INTO schema_migrations (version) VALUES ('20171029180302');
 
 INSERT INTO schema_migrations (version) VALUES ('20171105184112');
+
+INSERT INTO schema_migrations (version) VALUES ('20171105185540');
+
+INSERT INTO schema_migrations (version) VALUES ('20171105190143');
+
+INSERT INTO schema_migrations (version) VALUES ('20171109043602');
 
