@@ -1,0 +1,29 @@
+version: '3'
+services:
+  db:
+    image: mdillon/postgis:9.5
+    command: postgres -c max_connections=500 -c shared_buffers=512MB
+    ports:
+      - "5432:5432"
+  web:
+    build: .
+    command: bundle exec rails s -b '0.0.0.0'
+    volumes:
+      - .:/tweet-archive
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://postgres@db/bonzoesc_tweets
+  dump:
+    image: mdillon/postgis:9.5
+    command: bash
+    volumes:
+      - .:/tweet-archive
+    depends_on:
+      - db
+    environment:
+      - PGHOST=db
+      - PGUSER=postgres
+      - PGDATABASE=bonzoesc_tweets
